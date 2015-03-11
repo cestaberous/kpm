@@ -1,0 +1,38 @@
+#!/bin/bash
+VERSION="KPM VERSION 1.0.001-ALPHA-DISTBASE-UBUNTU"
+COMMANDS="Commands: install | purge | manrdeps | information"
+INSTDIR="installs"
+INFOCACHE="cache"
+CMD="null"
+PKG="null"
+DISTRO="UBUNTU"
+echo $VERSION
+
+#MAIN INTERFACE
+
+echo "Command [help]:"
+read CMD
+
+if [ "$CMD" = "help" ]; then
+	echo "SUCCESS!"
+elif [ "$CMD" = "install" ]; then
+	echo "Package Name:"
+	read PKG
+	cd $INSTDIR
+	mkdir $PKG
+	cd $PKG
+	echo "Downloading..."
+	wget http://kriosware.tk/$PKG/$PKG.tar.gz
+	echo "Beginning installation..."
+	tar -zxvf $PKG.tar.gz
+	echo "Resolving KPM-$DISTRO Dependencies..."
+	wget http://kriosware.tk/$PKG/$DISTRO/$PKG.kpmd
+	chmod 755 $PKG.kpmd
+	./$PKG.kpmd
+elif [ "$CMD" = "information" ]; then
+	echo "Package Name:"
+	read PKG
+	cd $INFOCACHE
+else
+	echo "FAIL!"
+fi
